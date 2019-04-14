@@ -18,10 +18,10 @@ for file_name in file_list:
     f1_scores = {}
     precision_scores = {}
     score_scores = {}
-    for k in range(100,2000,100):
+    for k in range(100,2000,100): #trying different number of estimators for xgboost to test the best no.
         print("processing", k)
         neigh = xgb.XGBRegressor(objective ="binary:logistic", n_estimators = k, learning_rate=0.01)
-        kf = KFold(n_splits=5)
+        kf = KFold(n_splits=5)#Doing k fold to validate
         kf.get_n_splits(x)
         for train_index, test_index in kf.split(x):
                 x_train, x_test = x[train_index], x[test_index]
@@ -57,7 +57,7 @@ for file_name in file_list:
                 neigh.fit(new_x_train, new_y_train)
 
                 y_pred = neigh.predict(x_test)
-                round = lambda num:1 if num > 0.5 else 0
+                round = lambda num:1 if num > 0.5 else 0 #round the float result of xgboost to boolean 
                 rounded_y_pred = []
                 for item in y_pred:
                     if item > 0.5 :
